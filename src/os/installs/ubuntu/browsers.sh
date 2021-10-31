@@ -9,35 +9,49 @@ cd "$(dirname "${BASH_SOURCE[0]}")" \
 print_in_purple "\n   Browsers\n\n"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# install chrome
+declare -r CHROME_URL="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+local tmpFile=""
 
-if ! package_is_installed "google-chrome-unstable"; then
+print_in_purple "\n • Download and install google chrome\n\n"
 
-    add_key "https://dl-ssl.google.com/linux/linux_signing_key.pub" \
-        || print_error "Chrome Canary (add key)"
+tmpFile="$(mktemp /tmp/XXXXX)"
 
-    add_to_source_list "[arch=amd64] https://dl.google.com/linux/deb/ stable main" "google-chrome.list" \
-        || print_error "Chrome Canary (add to package resource list)"
+download "$CHROME_URL" "$tmpFile"
+print_result $? "Download Chrome" "true"
+    printf "\n"
+sudo dpkg -i "$tmpFile"
+print_result $? "Install Chrome" "true"
+    printf "\n"
 
-    update &> /dev/null \
-        || print_error "Chrome Canary (resync package index files)"
+# if ! package_is_installed "google-chrome-unstable"; then
 
-fi
+#     add_key "https://dl-ssl.google.com/linux/linux_signing_key.pub" \
+#         || print_error "Chrome Canary (add key)"
 
-install_package "Chrome Canary" "google-chrome-unstable"
-install_package "Chromium" "chromium-browser"
+#     add_to_source_list "[arch=amd64] https://dl.google.com/linux/deb/ stable main" "google-chrome.list" \
+#         || print_error "Chrome Canary (add to package resource list)"
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#     update &> /dev/null \
+#         || print_error "Chrome Canary (resync package index files)"
 
-printf "\n"
+# fi
 
-if ! package_is_installed "firefox-trunk"; then
+# install_package "Chrome Canary" "google-chrome-unstable"
+# install_package "Chromium" "chromium-browser"
 
-    add_ppa "ubuntu-mozilla-daily/ppa" \
-        || print_error "Firefox Nightly (add PPA)"
+# # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    update &> /dev/null \
-        || print_error "Firefox Nightly (resync package index files)"
+# printf "\n"
 
-fi
+# if ! package_is_installed "firefox-trunk"; then
 
-install_package "Firefox Nightly" "firefox-trunk"
+#     add_ppa "ubuntu-mozilla-daily/ppa" \
+#         || print_error "Firefox Nightly (add PPA)"
+
+#     update &> /dev/null \
+#         || print_error "Firefox Nightly (resync package index files)"
+
+# fi
+
+# install_package "Firefox Nightly" "firefox-trunk"

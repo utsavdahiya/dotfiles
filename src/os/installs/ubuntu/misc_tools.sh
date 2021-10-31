@@ -9,23 +9,29 @@ cd "$(dirname "${BASH_SOURCE[0]}")" \
 print_in_purple "\n   Miscellaneous Tools\n\n"
 
 install_package "cURL" "curl"
-install_package "ShellCheck" "shellcheck"
-install_package "xclip" "xclip"
+# install_package "ShellCheck" "shellcheck"
+# install_package "xclip" "xclip"
 
-if [ -d "$HOME/.nvm" ]; then
+# installing copyq for clipboard history
+sudo apt install software-properties-common python-software-properties
+sudo add-apt-repository ppa:hluk/copyq
+sudo apt update
+sudo apt install copyq
 
-    if ! package_is_installed "yarn"; then
+# if [ -d "$HOME/.nvm" ]; then
 
-        add_key "https://dl.yarnpkg.com/debian/pubkey.gpg" \
-            || print_error "Yarn (add key)"
+#     if ! package_is_installed "yarn"; then
 
-        add_to_source_list "https://dl.yarnpkg.com/debian/ stable main" "yarn.list" \
-            || print_error "Yarn (add to package resource list)"
+#         add_key "https://dl.yarnpkg.com/debian/pubkey.gpg" \
+#             || print_error "Yarn (add key)"
 
-        update &> /dev/null \
-            || print_error "Yarn (resync package index files)"
+#         add_to_source_list "https://dl.yarnpkg.com/debian/ stable main" "yarn.list" \
+#             || print_error "Yarn (add to package resource list)"
 
-    fi
+#         update &> /dev/null \
+#             || print_error "Yarn (resync package index files)"
 
-    install_package "Yarn" "yarn" "--no-install-recommends"
-fi
+#     fi
+
+#     install_package "Yarn" "yarn" "--no-install-recommends"
+# fi
